@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en" class="smooth-scroll">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cairo Kitchen | Contemporary Egyptian Dining</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Using Playfair Display for elegant luxury and Plus Jakarta Sans for crisp modern legibility -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Premium Dark Theme Palette */
+            --bg-base: #070709;
+            --bg-surface: #121215;
+            --bg-surface-elevated: #1a1a1e;
+            
+            --primary: #FF8A00;
+            --primary-glow: rgba(255, 138, 0, 0.4);
+            --primary-hover: #FF9E2C;
+            
+            --text-main: #FDFBF7;
+            --text-muted: #A0A0AB;
+            --text-dark: #070709;
+            
+            --border-light: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(18, 18, 21, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            
+            --radius-md: 12px;
+            --radius-lg: 24px;
+            --radius-pill: 100px;
+            
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html.smooth-scroll {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-main);
+            background-color: var(--bg-base);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Background Glows */
+        .ambient-light {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .light-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(255,138,0,0.15) 0%, rgba(0,0,0,0) 70%); }
+        .light-2 { top: 40%; right: -20%; width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(255,138,0,0.1) 0%, rgba(0,0,0,0) 70%); }
+        .light-3 { bottom: -10%; left: 20%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(255,138,0,0.12) 0%, rgba(0,0,0,0) 70%); }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            line-height: 1.1;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Modern Glassmorphic Nav */
+        nav {
+            position: fixed;
+            top: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 3rem);
+            max-width: 1200px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-pill);
+            z-index: 100;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+            transition: all 0.4s var(--ease-out-expo);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 5rem;
+            padding: 0 1rem 0 2rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-container img {
+            height: 48px;
+            width: 48px;
+            object-fit: cover;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(255,138,0,0.3);
+            border: 2px solid rgba(255,255,255,0.1);
+            transition: transform 0.4s var(--ease-out-expo);
+        }
+        
+        .logo-container:hover img {
+            transform: rotate(10deg) scale(1.05);
+        }
+
+        .logo-text {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--text-main);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a.link {
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a.link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -6px;
+            left: 50%;
+            background: var(--primary);
+            transition: all 0.3s var(--ease-out-expo);
+            transform: translateX(-50%);
+        }
+
+        .nav-links a.link:hover {
+            color: var(--text-main);
+        }
+
+        .nav-links a.link:hover::after {
+            width: 100%;
+        }
+
+        /* Premium Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 1rem 2.25rem;
+            border-radius: var(--radius-pill);
+            transition: all 0.4s var(--ease-out-expo);
+            cursor: pointer;
+            border: none;
+            font-family: var(--font-body);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #D66D00);
+            color: var(--text-dark);
+            box-shadow: 0 10px 20px rgba(255, 138, 0, 0.2), inset 0 1px 0 rgba(255,255,255,0.4);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s var(--ease-out-expo);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(255, 138, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.5);
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-3px);
+        }
+
+        /* Immersive Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 0 4rem;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
+            z-index: -2;
+            transform: scale(1.05);
+            animation: slowZoom 20s infinite alternate linear;
+        }
+
+        @keyframes slowZoom {
+            0% { transform: scale(1.05); }
+            100% { transform: scale(1.15); }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to right, rgba(7,7,9,1) 10%, rgba(7,7,9,0.7) 50%, rgba(7,7,9,0.3) 100%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 700px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-subtitle {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+        }
+        
+        .hero-subtitle::before {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .hero h1 {
+            font-size: clamp(3.5rem, 7vw, 6.5rem);
+            letter-spacing: -2px;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .hero h1 span {
+            display: block;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255,255,255,0.5);
+            font-style: italic;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            max-width: 500px;
+            font-weight: 300;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* Core Section Styling */
+        .section {
+            padding: 8rem 0;
+            position: relative;
+        }
+
+        .section-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-label {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.8rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.125rem;
+            max-width: 600px;
+        }
+
+        /* Asymmetric Signature Dish */
+        .signature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .signature-visual {
+            position: relative;
+        }
+
+        .signature-image {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            transform: translateZ(0); /* Hardware accel */
+        }
+
+        .signature-image img {
+            width: 100%;
+            height: 120%;
+            object-fit: cover;
+            margin-top: -10%;
+            transition: transform 0.8s var(--ease-out-expo);
+        }
+
+        .signature-visual:hover .signature-image img {
+            transform: translateY(5%);
+        }
+
+        .signature-backdrop {
+            position: absolute;
+            top: -2rem;
+            left: -2rem;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--primary);
+            border-radius: var(--radius-lg);
+            z-index: 1;
+            opacity: 0.3;
+            transition: all 0.8s var(--ease-out-expo);
+        }
+
+        .signature-visual:hover .signature-backdrop {
+            top: 1rem; left: 1rem; opacity: 0.6;
+        }
+
+        .signature-content h3 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-style: italic;
+        }
+
+        .signature-content p {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.05rem;
+            font-weight: 500;
+            padding: 1rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: var(--radius-md);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateX(10px);
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,138,0,0.3);
+        }
+
+        .feature-item svg {
+            color: var(--primary);
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 5px rgba(255,138,0,0.5));
+        }
+
+        /* High-End Menu Display */
+        .menu-section {
+            background: var(--bg-surface);
+            position: relative;
+        }
+
+        .menu-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .menu-page {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: #000;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: all 0.5s var(--ease-out-expo);
+            position: relative;
+        }
+        
+        .menu-page::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.5);
+            pointer-events: none;
+        }
+
+        .menu-page:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 30px rgba(255,138,0,0.1);
+            border-color: rgba(255,138,0,0.3);
+            z-index: 10;
+        }
+
+        /* Immersive Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-rows: 300px;
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: var(--bg-surface-elevated);
+        }
+
+        .gallery-item:nth-child(1) { grid-column: span 8; grid-row: span 2; }
+        .gallery-item:nth-child(2) { grid-column: span 4; grid-row: span 1; }
+        .gallery-item:nth-child(3) { grid-column: span 4; grid-row: span 1; }
+        .gallery-item:nth-child(4) { grid-column: span 12; grid-row: span 1; }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s var(--ease-out-expo), filter 0.8s ease;
+            filter: grayscale(40%) contrast(1.1);
+        }
+
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+            filter: grayscale(0%) contrast(1.1);
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Glassmorphic Testimonials */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 3rem 2.5rem;
+            border-radius: var(--radius-lg);
+            position: relative;
+            transition: all 0.4s var(--ease-out-expo);
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 2rem; right: 2rem;
+            font-family: var(--font-heading);
+            font-size: 6rem;
+            line-height: 1;
+            color: rgba(255,255,255,0.03);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            background: rgba(25, 25, 30, 0.8);
+            border-color: rgba(255, 138, 0, 0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .testimonial-stars {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 4px;
+            filter: drop-shadow(0 0 5px rgba(255,138,0,0.4));
+        }
+
+        .testimonial-quote {
+            font-size: 1.125rem;
+            color: var(--text-main);
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .author-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--bg-surface-elevated), #2a2a32);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+        }
+
+        .author-info h4 {
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .author-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.25rem;
+        }
+
+        /* Striking Contact Section */
+        .contact-section {
+            padding: 10rem 0;
+            position: relative;
+            background: url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+        }
+
+        .contact-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(7, 7, 9, 0.85);
+            backdrop-filter: blur(5px);
+        }
+
+        .contact-card {
+            position: relative;
+            background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 32px;
+            padding: 5rem 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            overflow: hidden;
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .contact-info-row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2.5rem;
+            margin: 3rem 0;
+        }
+
+        .phone-number-display {
+            font-family: var(--font-heading);
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 800;
+            color: var(--text-main);
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+            letter-spacing: -2px;
+            background: linear-gradient(to bottom, #fff, #a0a0ab);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            padding: 4rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Animations triggered via JS */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s var(--ease-out-expo), transform 1s var(--ease-out-expo);
+        }
+
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                grid-auto-rows: 250px;
+            }
+            .gallery-item:nth-child(n) {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            nav { width: calc(100% - 2rem); top: 1rem; }
+            .hero { padding-top: 10rem; text-align: center; }
+            .hero-subtitle { justify-content: center; }
+            .hero-subtitle::before { display: none; }
+            .hero-actions { justify-content: center; }
+            .signature-grid { grid-template-columns: 1fr; gap: 4rem; }
+            .signature-content { text-align: center; }
+            .feature-list { align-items: center; text-align: left; }
+            .contact-card { padding: 3rem 1.5rem; border-radius: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Lights -->
+    <div class="ambient-light light-1"></div>
+    <div class="ambient-light light-2"></div>
+    <div class="ambient-light light-3"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo-container">
+                <img src="https://scontent-hbe1-2.xx.fbcdn.net/v/t39.30808-6/326275912_712782320200606_6113433269325314336_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=1d70fc&_nc_ohc=gbOtNoFe_7oQ7kNvwEA8n1k&_nc_oc=AdpgKRENuwNGffJcDhIjGOLJ2Kvb_4GQrmHyRiTb6LEXVsMpWjnwaoMn0wttIU3hOZs&_nc_zt=23&_nc_ht=scontent-hbe1-2.xx&_nc_gid=qGstK-Kmx5Jo2SmXm4E6IQ&_nc_ss=7a3a8&oh=00_Af2S9uVqzfgu8Ry8h7HhIhaZEOHSnDwZaRUyBOMHGpedpg&oe=69E9E22C" alt="Cairo Kitchen Logo">
+                <span class="logo-text">Cairo Kitchen</span>
+            </a>
+            <div class="nav-links">
+                <a href="#about" class="link">Experience</a>
+                <a href="#menu" class="link">Menu</a>
+                <a href="#gallery" class="link">Gallery</a>
+                <a href="#testimonials" class="link">Reviews</a>
+                <a href="#contact" class="btn btn-primary" style="padding: 0.6rem 1.5rem; font-size: 0.85rem;">
+                    Reserve
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content reveal-up">
+                <span class="hero-subtitle">Authentic Egyptian Cuisine</span>
+                <h1>Egypt’s Culture <span>On a Plate.</span></h1>
+                <p>We are passionate about redefining Egyptian dining. Experience the warm, authentic flavors of home presented in an immersive, contemporary setting.</p>
+                <div class="hero-actions">
+                    <a href="#menu" class="btn btn-primary">Discover the Menu</a>
+                    <a href="#contact" class="btn btn-outline">Book a Table</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience / Signature Dish -->
+    <section class="section" id="about">
+        <div class="container">
+            <div class="signature-grid">
+                <div class="signature-visual reveal-up">
+                    <div class="signature-backdrop"></div>
+                    <div class="signature-image">
+                        <img src="https://images.unsplash.com/photo-1596568359542-a1b41bb87424?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Egyptian Home Made Koshary">
+                    </div>
+                </div>
+                <div class="signature-content reveal-up" style="transition-delay: 0.2s;">
+                    <span class="section-label">Our Masterpiece</span>
+                    <h3>The Signature Koshary</h3>
+                    <p>
+                        Experience Egypt's iconic national dish, elevated. A masterful blend of premium rice, lentils, macaroni, and chickpeas, crowned with perfectly crisped onions and accompanied by our artisanal spiced tomato and Dokka sauces.
+                    </p>
+                    <ul class="feature-list">
+                        <li class="feature-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            Sourced with uncompromising quality
+                        </li>
+                        <li class="feature-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                            Authentic heritage recipes
+                        </li>
+                        <li class="feature-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            Refined dining atmosphere
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Curated Menu -->
+    <section class="section menu-section" id="menu">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <span class="section-label">Culinary Journey</span>
+                <h2>The Menu</h2>
+                <p>Explore our curated selection of traditional Egyptian tajens, masterful grilled meats, and authentic appetizers designed for the modern palate.</p>
+            </div>
+            
+            <div class="menu-grid">
+                <div class="menu-page reveal-up">
+                    <img src="https://scontent-hbe1-1.xx.fbcdn.net/v/t39.30808-6/640254333_1327986799353992_5643509856535739528_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=13d280&_nc_ohc=wbhjdkpQ2ZYQ7kNvwHW47gh&_nc_oc=Adrz8DCqbdcU65Eds-i0fG6ByIVKD7TNqH2KooFi1R2rvFW11JTsT4CrIKD-fV-tI-c&_nc_zt=23&_nc_ht=scontent-hbe1-1.xx&_nc_gid=tERJp3F1HCUmbSFMhycW6w&_nc_ss=7a3a8&oh=00_Af1VazHMCX_nsEgItWH7XcgxOp_zxUB10a-x4_BmfOfL6A&oe=69E9C41E" alt="Cairo Kitchen Premium Menu Page 1">
+                </div>
+                <div class="menu-page reveal-up" style="transition-delay: 0.2s;">
+                    <img src="https://scontent-hbe1-2.xx.fbcdn.net/v/t39.30808-6/641079982_1327986662687339_3883307080304133583_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=13d280&_nc_ohc=HolVjwg8SRIQ7kNvwHUfbBJ&_nc_oc=AdquG--bQ6PjeeUa5MtBzmYglcV--Qc6b3al2CZ5wczopyDTfU3Ml0y_rlQEXMTnQi4&_nc_zt=23&_nc_ht=scontent-hbe1-2.xx&_nc_gid=6nNcA4uF-ZccXSzlBTxNuw&_nc_ss=7a3a8&oh=00_Af3duQo1N8JSDYRS54wCMwDx3IU99y1Ip0EcoTTbmjcPIw&oe=69E9E31F" alt="Cairo Kitchen Premium Menu Page 2">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visual Gallery -->
+    <section class="section" id="gallery">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <span class="section-label">Aesthetic</span>
+                <h2>Visual Taste</h2>
+                <p>A glimpse into the elegance, texture, and vibrance that define the Cairo Kitchen dining experience.</p>
+            </div>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item reveal-up">
+                    <img src="https://scontent-hbe1-2.xx.fbcdn.net/v/t39.30808-6/605505813_1279441390875200_8502696176893790750_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=7b2446&_nc_ohc=bXoRi3TB31kQ7kNvwEkuEKC&_nc_oc=AdoqBgXIyplgFOnnf0dJOsrG5fXlfXtfFcmZwRnlwse3qIvYrv4TkGyaQANcjSqRNsk&_nc_zt=23&_nc_ht=scontent-hbe1-2.xx&_nc_gid=2rP2y77UztErzsug6k-bIw&_nc_ss=7a3a8&oh=00_Af3u5JYTF-SLYFH07TkL1dMu73WO_EMkHDG2OArK915vmw&oe=69E9C1CE" alt="Cairo Kitchen Plate">
+                </div>
+                <div class="gallery-item reveal-up" style="transition-delay: 0.1s;">
+                    <img src="https://scontent-hbe1-2.xx.fbcdn.net/v/t39.30808-6/605269588_1279441430875196_6385846238683803304_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=7b2446&_nc_ohc=3TOtRoK4GNkQ7kNvwFzEKbM&_nc_oc=Adp39FPryEk-IScfbGH22WiHTEbel8q8_5Ajt5923DE98Vc41RalaaBIlCXfBzHTvdU&_nc_zt=23&_nc_ht=scontent-hbe1-2.xx&_nc_gid=owej21kRUfQRaIcMoKUHTQ&_nc_ss=7a3a8&oh=00_Af2jN_keQU6jpPtyAZqMHgBBEnoN6nPtxBPdhgnq7VOMyQ&oe=69E9E553" alt="Traditional Spread">
+                </div>
+                <div class="gallery-item reveal-up" style="transition-delay: 0.2s;">
+                    <img src="https://scontent-hbe1-1.xx.fbcdn.net/v/t39.30808-6/532436138_1171768754975798_5604328509278622064_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=7b2446&_nc_ohc=Z3Uwsc3TCtYQ7kNvwEK8hVM&_nc_oc=AdoPJj-mVqu3e9-828aP78W3o1nMjn6mGjfTf3nWOoD4DG8y7cLwGsqA_ZfG6e0h1i8&_nc_zt=23&_nc_ht=scontent-hbe1-1.xx&_nc_gid=zmNbzU3zWP_Y_rHqZAeIUw&_nc_ss=7a3a8&oh=00_Af2TqnoKwobxqf5JHY0fZJE64WRPgMtDsyehxFXlEmJ8ZQ&oe=69E9D6E6" alt="Freshly Prepared Egyptian Food">
+                </div>
+                <div class="gallery-item reveal-up" style="transition-delay: 0.3s;">
+                    <img src="https://scontent-hbe1-1.xx.fbcdn.net/v/t39.30808-6/555451283_1208669384619068_7592783487652620376_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=7b2446&_nc_ohc=ptHkOL3MqokQ7kNvwF6szHy&_nc_oc=AdoCd9vgnla1GoBEr9pZmhOPn5Jzgq-V4dwNUdPDHsCTr3pI1rs8fzZfSXbh3Uq573Q&_nc_zt=23&_nc_ht=scontent-hbe1-1.xx&_nc_gid=rmYYIBs11_XxOEmbU5gWhg&_nc_ss=7a3a8&oh=00_Af33WrczJFSjf_LwQRqRr0ii9rGCDWpvea9DQnwC-uTzEA&oe=69E9CBDC" alt="Authentic Dining Details">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section" id="testimonials">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <span class="section-label">Acclaim</span>
+                <h2>Guest Experiences</h2>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card reveal-up">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-quote">"Absolutely the best Koshary I've had outside of my grandmother's house! The Dokka sauce is perfectly spiced and the atmosphere is wonderfully modern yet authentic."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">A</div>
+                        <div class="author-info">
+                            <h4>Ahmed T.</h4>
+                            <p>Local Connoisseur</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card reveal-up" style="transition-delay: 0.1s;">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-quote">"A beautifully designed restaurant with fantastic Egyptian cuisine. Their stuffed vine leaves are incredibly fresh and flavorful. Highly recommended for sophisticated family dinners."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">S</div>
+                        <div class="author-info">
+                            <h4>Sarah M.</h4>
+                            <p>Dine-in Guest</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card reveal-up" style="transition-delay: 0.2s;">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-quote">"We ordered premium catering for a large gathering and everything was flawless. The tajens arrived hot, portions were generous, and the presentation was immaculate."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">K</div>
+                        <div class="author-info">
+                            <h4>Karim R.</h4>
+                            <p>Event Client</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section class="contact-section" id="contact">
+        <div class="contact-overlay"></div>
+        <div class="container relative" style="z-index: 10;">
+            <div class="contact-card reveal-up">
+                <span class="section-label">Join Us</span>
+                <h2 style="font-family: var(--font-heading); font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1rem;">Reserve Your Experience</h2>
+                <p style="color: var(--text-muted); font-size: 1.125rem;">Allow us to serve you the finest Egyptian cuisine in town. Contact us directly to secure a table, plan an event, or arrange for delivery.</p>
+                
+                <div class="contact-info-row">
+                    <div class="phone-number-display">012 2333 3593</div>
+                    
+                    <a href="tel:01223333593" class="btn btn-primary" style="padding: 1.25rem 3rem; font-size: 1.1rem; box-shadow: 0 15px 30px rgba(255,138,0,0.3);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        Call to Reserve
+                    </a>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 4rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 3rem;">
+                    <div>
+                        <h4 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--primary);">Locations</h4>
+                        <p style="color: var(--text-muted);">Zamalek: 118 26th of July St.<br>Maadi: 19 Street 231</p>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--primary);">Catering</h4>
+                        <p style="color: var(--text-muted);">Bringing elevated homemade<br>goodness to your events.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <img src="https://scontent-hbe1-2.xx.fbcdn.net/v/t39.30808-6/326275912_712782320200606_6113433269325314336_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=1d70fc&_nc_ohc=gbOtNoFe_7oQ7kNvwEA8n1k&_nc_oc=AdpgKRENuwNGffJcDhIjGOLJ2Kvb_4GQrmHyRiTb6LEXVsMpWjnwaoMn0wttIU3hOZs&_nc_zt=23&_nc_ht=scontent-hbe1-2.xx&_nc_gid=qGstK-Kmx5Jo2SmXm4E6IQ&_nc_ss=7a3a8&oh=00_Af2S9uVqzfgu8Ry8h7HhIhaZEOHSnDwZaRUyBOMHGpedpg&oe=69E9E22C" alt="Cairo Kitchen Logo" style="width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 1.5rem; opacity: 0.5; filter: grayscale(100%); transition: all 0.3s ease;">
+            <p style="color: rgba(255,255,255,0.4); font-size: 0.85rem; letter-spacing: 1px;">&copy; 2026 CAIRO KITCHEN. ALL RIGHTS RESERVED.</p>
+        </div>
+    </footer>
+
+    <!-- Simple Scroll Reveal Script for Agency Feel -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const reveals = document.querySelectorAll('.reveal-up');
+            
+            const revealOnScroll = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        revealOnScroll.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            reveals.forEach(el => revealOnScroll.observe(el));
+        });
+    </script>
+</body>
+</html>
